@@ -2,6 +2,8 @@ import minescript # type: ignore
 import time
 import sys
 
+MOB = False
+
 def getBlockName():
     try:
         return minescript.player_get_targeted_block().type
@@ -14,7 +16,7 @@ def getBestTool():
     axe = ["oak_log", "log", "chest", "minecraft:oak_log"]
     shovel = ["dirt", "grass_block", "gravel", "sand"]
     sword = ["web"]
-    if minescript.player_get_targeted_entity() != None:
+    if minescript.player_get_targeted_entity() != None and MOB == True:
         return "_axe"
     for _ in pickaxe:
         if _ in block:
