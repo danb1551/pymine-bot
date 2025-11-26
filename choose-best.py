@@ -40,13 +40,13 @@ def setBestTool():
 
 
 try:
-    iterations = sys.argv[1]
+    iterations = int(sys.argv[1])
 except Exception as e:
     iterations = 100
 try:
     sleep = int(sys.argv[2])
 except Exception as e:
-    sleep = float(0.1)
+    sleep = 0.1
 
 for i in range(iterations):
     setBestTool()
