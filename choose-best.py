@@ -13,7 +13,7 @@ def getBestTool():
     pickaxe = ["stone", "ore", "diamond_block", "gold_block", "iron_block", "coal", "coal_block", "copper_block"]
     axe = ["oak_log", "log", "chest", "minecraft:oak_log"]
     shovel = ["dirt", "grass_block", "gravel", "sand"]
-    shovel = ["web"]
+    sword = ["web"]
     if minescript.player_get_targeted_entity() != None:
         return "_axe"
     for _ in pickaxe:
