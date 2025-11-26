@@ -44,9 +44,9 @@ try:
 except Exception as e:
     iterations = 100
 try:
-    sleep = sys.argv[2]
+    sleep = int(sys.argv[2])
 except Exception as e:
-    sleep = 0.1
+    sleep = float(0.1)
 
 for i in range(iterations):
     setBestTool()
