@@ -55,5 +55,7 @@ except Exception as e:
     sleep = 0.1
 
 for i in range(iterations):
+    if minescript.player_get_targeted_entity() != None and MOB == False:
+        break
     setBestTool()
     time.sleep(sleep)
