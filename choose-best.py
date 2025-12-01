@@ -9,6 +9,67 @@ def getBlockName():
         return minescript.player_get_targeted_block().type
     except Exception as e:
         return f"Error: {e}"
+    
+def canMineThisPickaxe(block, pickaxe):
+    pick_level = None
+    block_level = None
+    if "wooden_pickaxe" in pickaxe:
+        pick_level = 1
+    elif "stone_pickaxe" in pickaxe or "gold_pickaxe" in pickaxe:
+        pick_level = 2
+    else:
+        pick_level = 3
+    levelOne = ["stone", "diorite", "coal"]
+    levelTwo = ["iron"]
+    levelThree = ["gold", "diamond"]
+    for item in levelThree:
+        if block in item:
+            block_level = 3
+    for item in levelTwo:
+        if block in item:
+            block_level = 2
+    for item in levelOne:
+        if block in item:
+            block_level = 1
+    if block_level == None:
+        block_level = 3
+    if pick_level == None:
+        pick_level = 3
+    return bool(block_level <= pick_level)
+
+def hasWorstPlace(old_pick, new_pick):
+    old_pick_level = None
+    if "wooden_pickaxe" in old_pick:
+        old_pick_level = 1
+    elif "stone_pickaxe" in old_pick or "gold_pickaxe" in old_pick:
+        old_pick_level = 2
+    else:
+        old_pick_level = 3
+    new_pick_level = None
+    if "wooden_pickaxe" in new_pick:
+        new_pick_level = 1
+    elif "stone_pickaxe" in new_pick or "gold_pickaxe" in new_pick:
+        new_pick_level = 2
+    else:
+        new_pick_level = 3
+        return bool(old_pick_level > new_pick_level)
+
+def getAdequatePickaxe():
+    block = getBlockName()
+    inv = minescript.player_inventory()
+    old_pick = ""
+    for i in range(0, 9):
+        if "pickaxe" in inv[i].item: 
+            if canMineThisPickaxe(block, inv[i].item):
+                if old_pick == "":
+                    old_pick = inv[i].item
+                    slot = inv[i].slot
+                    continue
+                new_pick = inv[i].item
+                if hasWorstPlace(old_pick, new_pick):
+                    slot = inv[i].slot
+                    old_pick = new_pick
+    return slot
 
 def getBestTool():
     block = getBlockName()
@@ -35,6 +96,8 @@ def getBestTool():
     return "pickaxe"
 
 def getToolIndex(tool):
+    if "pickaxe" in tool:
+        return getAdequatePickaxe()
     inv = minescript.player_inventory()
     for item in inv:
         if tool in item.item:
@@ -52,7 +115,7 @@ except Exception as e:
 try:
     sleep = int(sys.argv[2])
 except Exception as e:
-    sleep = 0.1
+    sleep = 0.25
 
 for i in range(iterations):
     if minescript.player_get_targeted_entity() != None and MOB == False:
